@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DS | 프로젝트 매니저</title>
+  <meta name="description" content="프로젝트 매니저 DS의 프로필 & 포트폴리오" />
+
+  <!-- 다크모드 깜빡임 방지: 렌더링 전에 테마 적용 -->
+  <script>
+    try {
+      const saved = localStorage.getItem('theme');
+      if (saved === 'dark' || (!saved && matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+    } catch (e) {}
+  </script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Pretendard Variable"', 'Pretendard', 'system-ui', 'sans-serif'] },
+          colors: {
+            // 밝은 남색(Navy) 팔레트
+            navy: {
+              50: '#f0f4fc', 100: '#dde6f7', 200: '#c0d0f0', 300: '#96b0e4', 400: '#6c8ed6',
+              500: '#4d6fc6', 600: '#3d5aad', 700: '#33498d', 800: '#2b3d73', 900: '#24335e', 950: '#1a2547',
+            },
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-navy-50 text-navy-900 dark:bg-navy-950 dark:text-navy-50 font-sans antialiased transition-colors">
+
+  <!-- ===== 배경: 은은하게 번지는 빛 ===== -->
+  <div aria-hidden="true" class="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+    <div class="blob absolute -left-32 -top-32 h-[28rem] w-[28rem] rounded-full bg-navy-300/50 blur-3xl dark:bg-navy-500/30"></div>
+    <div class="blob blob-2 absolute right-[-8rem] top-1/4 h-[26rem] w-[26rem] rounded-full bg-sky-200/60 blur-3xl dark:bg-sky-500/20"></div>
+    <div class="blob blob-3 absolute bottom-[-10rem] left-1/3 h-[30rem] w-[30rem] rounded-full bg-indigo-200/50 blur-3xl dark:bg-indigo-400/20"></div>
+  </div>
+
+  <!-- ===== 헤더 / 네비게이션 ===== -->
+  <header id="navbar" class="fixed inset-x-0 top-0 z-50 px-4 pt-3 sm:px-6">
+    <nav class="glass-nav mx-auto flex max-w-5xl items-center justify-between rounded-2xl px-3 py-2.5 sm:px-4" aria-label="주 메뉴">
+      <a href="#home" class="flex items-center gap-2.5">
+        <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-navy-400 to-navy-600 text-sm font-extrabold text-white shadow-md shadow-navy-500/30">DS</span>
+        <span class="hidden text-sm font-bold tracking-tight lg:inline">Project Manager</span>
+      </a>
+
+      <ul class="hidden items-center gap-1 text-sm font-medium sm:flex">
+        <li><a href="#home" class="nav-link">홈</a></li>
+        <li><a href="#about" class="nav-link">소개</a></li>
+        <li><a href="#skills" class="nav-link">기술</a></li>
+        <li><a href="#projects" class="nav-link">프로젝트</a></li>
+        <li><a href="#contact" class="nav-link">연락처</a></li>
+      </ul>
+
+      <div class="flex items-center gap-1.5">
+        <a href="#contact" class="btn-primary hidden rounded-full px-4 py-2 text-sm font-semibold md:inline-flex">연락하기</a>
+        <button id="theme-toggle" aria-label="다크모드 전환" class="btn-glass rounded-full p-2">
+          <svg class="hidden h-5 w-5 dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+          <svg class="h-5 w-5 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <button id="menu-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mobile-menu" class="btn-glass rounded-full p-2 sm:hidden">
+          <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </nav>
+
+    <!-- 모바일 메뉴 -->
+    <div id="mobile-menu" class="glass-nav mx-auto mt-2 hidden max-w-5xl rounded-2xl sm:hidden">
+      <ul class="flex flex-col p-2 text-sm font-medium">
+        <li><a href="#home" class="block rounded-xl px-4 py-3 hover:bg-white/40 dark:hover:bg-white/10">홈</a></li>
+        <li><a href="#about" class="block rounded-xl px-4 py-3 hover:bg-white/40 dark:hover:bg-white/10">소개</a></li>
+        <li><a href="#skills" class="block rounded-xl px-4 py-3 hover:bg-white/40 dark:hover:bg-white/10">기술</a></li>
+        <li><a href="#projects" class="block rounded-xl px-4 py-3 hover:bg-white/40 dark:hover:bg-white/10">프로젝트</a></li>
+        <li><a href="#contact" class="block rounded-xl px-4 py-3 hover:bg-white/40 dark:hover:bg-white/10">연락처</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <!-- ===== Hero ===== -->
+    <section id="home" class="flex min-h-screen items-center px-4 pt-24 sm:px-6">
+      <div class="mx-auto grid w-full max-w-5xl items-center gap-12 md:grid-cols-[1.25fr,1fr]">
+        <div>
+          <p class="reveal mb-4 inline-flex items-center gap-2 rounded-full border border-white/60 bg-white/40 px-3 py-1 text-xs font-semibold text-navy-600 backdrop-blur dark:border-white/15 dark:bg-white/5 dark:text-navy-200">
+            <span class="h-2 w-2 rounded-full bg-emerald-400"></span> 새로운 프로젝트 제안 환영
+          </p>
+          <h1 class="reveal text-6xl font-extrabold tracking-tight sm:text-7xl">
+            안녕하세요,<br />
+            <span class="bg-gradient-to-r from-navy-500 to-sky-400 bg-clip-text text-transparent dark:from-navy-300 dark:to-sky-300">DS</span>입니다
+          </h1>
+          <p class="reveal mt-5 text-xl font-semibold text-navy-700 dark:text-navy-200 sm:text-2xl">
+            <span id="typing"></span><span class="caret">|</span>
+          </p>
+          <p class="reveal mt-5 max-w-xl text-lg leading-relaxed text-navy-700/80 dark:text-navy-200/80">
+            금융 서비스 구축 프로젝트를 이끌어 온 프로젝트 매니저입니다.
+          </p>
+          <div class="reveal mt-10 flex flex-wrap gap-3">
+            <a href="#projects" class="btn-primary rounded-full px-6 py-3 text-sm font-semibold">프로젝트 보기</a>
+            <a href="#contact" class="btn-glass rounded-full px-6 py-3 text-sm font-semibold">연락하기</a>
+          </div>
+        </div>
+
+        <!-- 프로필 카드 -->
+        <div class="reveal">
+          <div class="glass float mx-auto max-w-sm rounded-3xl p-8">
+            <div class="flex items-center gap-4">
+              <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-navy-400 to-sky-400 text-2xl font-extrabold text-white shadow-lg shadow-navy-500/30">DS</div>
+              <div>
+                <p class="text-lg font-bold">DS</p>
+                <p class="text-sm text-navy-600 dark:text-navy-300">Project Manager</p>
+              </div>
+            </div>
+            <ul class="mt-6 space-y-3 text-sm">
+              <li class="flex items-center justify-between rounded-xl bg-white/40 px-4 py-3 dark:bg-white/5">
+                <span class="text-navy-600 dark:text-navy-300">분야</span><span class="font-semibold">금융 IT</span>
+              </li>
+              <li class="flex items-center justify-between rounded-xl bg-white/40 px-4 py-3 dark:bg-white/5">
+                <span class="text-navy-600 dark:text-navy-300">배경</span><span class="font-semibold">풀스택 개발자</span>
+              </li>
+              <li class="flex items-center justify-between rounded-xl bg-white/40 px-4 py-3 dark:bg-white/5">
+                <span class="text-navy-600 dark:text-navy-300">이메일</span><span class="font-semibold">ablefor@gmail.com</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== About ===== -->
+    <section id="about" class="px-4 py-24 sm:px-6">
+      <div class="glass reveal mx-auto max-w-5xl rounded-3xl p-8 sm:p-12">
+        <h2 class="section-title">소개</h2>
+        <p class="mt-6 text-lg leading-relaxed text-navy-800 dark:text-navy-100">
+          안녕하세요 최고의 프로젝트 매니저를 소개합니다!<br />
+          그 이름은 바로~~~~ <strong class="text-navy-500 dark:text-sky-300">당신!!</strong> 입니다~
+        </p>
+        <dl class="mt-8 grid gap-4 sm:grid-cols-3">
+          <div class="rounded-2xl border border-white/60 bg-white/40 p-5 dark:border-white/10 dark:bg-white/5">
+            <dt class="text-xs text-navy-500 dark:text-navy-300">역할</dt>
+            <dd class="mt-1 font-semibold">프로젝트 매니저</dd>
+          </div>
+          <div class="rounded-2xl border border-white/60 bg-white/40 p-5 dark:border-white/10 dark:bg-white/5">
+            <dt class="text-xs text-navy-500 dark:text-navy-300">배경</dt>
+            <dd class="mt-1 font-semibold">풀스택 개발자</dd>
+          </div>
+          <div class="rounded-2xl border border-white/60 bg-white/40 p-5 dark:border-white/10 dark:bg-white/5">
+            <dt class="text-xs text-navy-500 dark:text-navy-300">분야</dt>
+            <dd class="mt-1 font-semibold">금융 IT</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- ===== 기술 스택 ===== -->
+    <section id="skills" class="px-4 py-24 sm:px-6">
+      <div class="mx-auto max-w-5xl">
+        <h2 class="section-title reveal">기술 스택</h2>
+        <p class="reveal mt-4 text-navy-700/80 dark:text-navy-200/80">풀스택 개발 경험을 바탕으로 기술과 일정을 함께 봅니다.</p>
+        <!-- script.js 의 SKILLS 배열로 채워집니다 -->
+        <div id="skills-grid" class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+      </div>
+    </section>
+
+    <!-- ===== 프로젝트 ===== -->
+    <section id="projects" class="px-4 py-24 sm:px-6">
+      <div class="mx-auto max-w-5xl">
+        <h2 class="section-title reveal">프로젝트</h2>
+        <div id="project-filters" class="reveal mt-8 flex flex-wrap gap-2"></div>
+        <!-- script.js 의 PROJECTS 배열로 채워집니다 -->
+        <div id="projects-grid" class="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3"></div>
+      </div>
+    </section>
+
+    <!-- ===== 연락처 ===== -->
+    <section id="contact" class="px-4 py-24 sm:px-6">
+      <div class="glass reveal relative mx-auto max-w-3xl overflow-hidden rounded-3xl px-6 py-16 text-center sm:px-12">
+        <div aria-hidden="true" class="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-navy-300/50 blur-3xl dark:bg-navy-400/30"></div>
+        <div aria-hidden="true" class="pointer-events-none absolute -bottom-20 -left-10 h-56 w-56 rounded-full bg-sky-200/60 blur-3xl dark:bg-sky-400/20"></div>
+        <div class="relative">
+          <h2 class="text-3xl font-extrabold sm:text-4xl">함께 일해요</h2>
+          <p class="mx-auto mt-4 max-w-md text-navy-700/80 dark:text-navy-200/80">새로운 프로젝트나 협업 제안은 언제든 환영합니다.</p>
+          <div class="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <a href="mailto:ablefor@gmail.com" class="btn-primary inline-flex items-center gap-2 rounded-full px-6 py-3 font-semibold">
+              <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+              ablefor@gmail.com
+            </a>
+            <button id="copy-email" data-email="ablefor@gmail.com" class="btn-glass rounded-full px-6 py-3 font-semibold">주소 복사</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="px-4 py-8 text-center text-sm text-navy-500 dark:text-navy-300">
+    © <span id="year"></span> DS. All rights reserved.
+  </footer>
+
+  <!-- 맨 위로 -->
+  <button id="to-top" aria-label="맨 위로"
+    class="btn-glass fixed bottom-6 right-6 z-40 translate-y-4 rounded-full p-3 opacity-0 pointer-events-none">
+    <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m18 15-6-6-6 6"/></svg>
+  </button>
+
+  <!-- 토스트 -->
+  <div id="toast"
+    class="glass-nav fixed bottom-6 left-1/2 z-50 -translate-x-1/2 translate-y-4 rounded-full px-5 py-3 text-sm font-medium opacity-0 transition pointer-events-none">
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
