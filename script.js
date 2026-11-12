@@ -215,6 +215,22 @@ $('#skills-grid').innerHTML = SKILLS.map((s) => `
 `).join('');
 
 // ----- 프로젝트 렌더링 + 필터 -----
+// 수행 기간(개월) 계산: 시작월과 종료월을 모두 포함, end가 비어 있으면 이번 달까지
+function getDurationMonths({ start, end }) {
+  const [sy, sm] = start.split('.').map(Number);
+  const now = new Date();
+  const [ey, em] = end ? end.split('.').map(Number) : [now.getFullYear(), now.getMonth() + 1];
+  return (ey - sy) * 12 + (em - sm) + 1;
+}
+
+// 12개월 미만은 "N개월", 이상은 "N년 M개월"
+function formatDuration(period) {
+  const months = getDurationMonths(period);
+  if (months < 12) return `${months}개월`;
+  const years = Math.floor(months / 12);
+  return months % 12 ? `${years}년 ${months % 12}개월` : `${years}년`;
+}
+
 function renderProjects(filter) {
   const list = filter === '전체' ? PROJECTS : PROJECTS.filter((p) => p.type === filter);
   // 건수 표시: 필터를 걸면 해당 분야 건수와 전체 건수를 함께 보여줌
@@ -225,36 +241,44 @@ function renderProjects(filter) {
     const index = PROJECTS.indexOf(p);
     // 번호는 PROJECTS 순서(최신순) 기준이라 필터를 걸어도 바뀌지 않음
     const no = String(index + 1).padStart(2, '0');
+    const ongoing = !p.period.end;
+    // 가로형 목록 카드: [번호·아이콘] [분야·제목·설명·태그] [기간·버튼]
     return `
-    <article ${p.detail ? `data-project="${index}"` : ''} class="glass glass-hover group flex flex-col overflow-hidden rounded-2xl ${p.detail ? 'cursor-pointer' : ''}">
-      <div class="relative h-44 overflow-hidden bg-gradient-to-br ${p.gradient}">
-        <span class="absolute left-4 top-4 rounded-full border border-white/60 bg-white/60 px-3 py-1 text-xs font-bold text-navy-700 shadow-sm backdrop-blur-md">No. ${no}</span>
-        <div class="absolute -right-8 -top-8 h-36 w-36 rounded-full bg-white/40 blur-2xl transition duration-500 group-hover:scale-125"></div>
-        <div class="absolute -bottom-12 left-2 h-32 w-32 rounded-full bg-white/25 blur-2xl"></div>
-        <span class="absolute inset-0 m-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-white/60 bg-white/30 text-3xl shadow-lg backdrop-blur-md transition duration-300 group-hover:scale-110">${p.icon}</span>
+    <article ${p.detail ? `data-project="${index}"` : ''} class="glass glass-hover group flex flex-col overflow-hidden rounded-2xl sm:flex-row ${p.detail ? 'cursor-pointer' : ''}">
+      <div class="relative flex shrink-0 items-center gap-3 overflow-hidden bg-gradient-to-br ${p.gradient} px-5 py-4 sm:w-32 sm:flex-col sm:justify-center sm:gap-2 sm:px-0">
+        <div class="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-white/40 blur-2xl transition duration-500 group-hover:scale-125"></div>
+        <span class="relative text-sm font-extrabold text-navy-800/80">No. ${no}</span>
+        <span class="relative flex h-12 w-12 items-center justify-center rounded-2xl border border-white/60 bg-white/30 text-2xl shadow-lg backdrop-blur-md transition duration-300 group-hover:scale-110">${p.icon}</span>
       </div>
-      <div class="flex flex-1 flex-col p-6">
-        <div class="flex flex-wrap items-center gap-2 text-xs font-semibold">
-          <span class="uppercase tracking-wider text-navy-500 dark:text-sky-300">${p.type}</span>
-          <span class="rounded-full bg-navy-500/10 px-2 py-0.5 text-navy-600 dark:bg-white/10 dark:text-navy-100">${p.kind} · ${p.role}</span>
+      <div class="flex flex-1 flex-col gap-4 p-5 sm:p-6 md:flex-row md:items-center md:gap-8">
+        <div class="min-w-0 flex-1">
+          <div class="flex flex-wrap items-center gap-2 text-xs font-semibold">
+            <span class="uppercase tracking-wider text-navy-500 dark:text-sky-300">${p.type}</span>
+            <span class="rounded-full bg-navy-500/10 px-2 py-0.5 text-navy-600 dark:bg-white/10 dark:text-navy-100">${p.kind} · ${p.role}</span>
+          </div>
+          <h3 class="mt-2 text-lg font-bold leading-snug">${p.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-navy-700/80 dark:text-navy-200/80">${p.description}</p>
+          <ul class="mt-3 flex flex-wrap gap-2">
+            ${p.tags.map((t) => `<li class="rounded-md bg-white/50 px-2 py-1 text-xs text-navy-700 dark:bg-white/10 dark:text-navy-100">#${t}</li>`).join('')}
+          </ul>
         </div>
-        <h3 class="mt-2 text-lg font-bold leading-snug">${p.title}</h3>
-        <p class="mt-1 text-xs text-navy-500 dark:text-navy-300">${p.period.start} ~ ${p.period.end || '현재'}</p>
-        <p class="mt-3 text-sm leading-relaxed text-navy-700/80 dark:text-navy-200/80">${p.description}</p>
-        <ul class="mt-4 flex flex-wrap gap-2">
-          ${p.tags.map((t) => `<li class="rounded-md bg-white/50 px-2 py-1 text-xs text-navy-700 dark:bg-white/10 dark:text-navy-100">#${t}</li>`).join('')}
-        </ul>
-        ${p.detail || p.url ? `
-        <div class="mt-auto flex flex-wrap gap-2 pt-6">
-          ${p.detail ? `
-          <button type="button" data-open-detail class="btn-primary inline-flex items-center gap-1 rounded-full px-4 py-2 text-sm font-semibold">
-            자세히 보기 <span aria-hidden="true">+</span>
-          </button>` : ''}
-          ${p.url ? `
-          <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="btn-glass inline-flex items-center gap-1 rounded-full px-4 py-2 text-sm font-semibold">
-            사이트 방문 <span aria-hidden="true">→</span>
-          </a>` : ''}
-        </div>` : ''}
+        <div class="flex shrink-0 flex-wrap items-center justify-between gap-3 border-t border-white/60 pt-4 dark:border-white/10 md:w-48 md:flex-col md:items-end md:justify-center md:border-l md:border-t-0 md:pl-6 md:pt-0">
+          <div class="md:text-right">
+            <p class="text-sm font-semibold text-navy-700 dark:text-navy-100">${p.period.start} ~ ${p.period.end || '현재'}</p>
+            <p class="mt-1 text-xs text-navy-500 dark:text-navy-300">${ongoing ? '<span class="font-semibold text-emerald-500">● 진행 중</span> · ' : ''}${formatDuration(p.period)}</p>
+          </div>
+          ${p.detail || p.url ? `
+          <div class="flex flex-wrap gap-2 md:justify-end">
+            ${p.detail ? `
+            <button type="button" data-open-detail class="btn-primary inline-flex items-center gap-1 rounded-full px-4 py-2 text-sm font-semibold">
+              자세히 보기 <span aria-hidden="true">+</span>
+            </button>` : ''}
+            ${p.url ? `
+            <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="btn-glass inline-flex items-center gap-1 rounded-full px-4 py-2 text-sm font-semibold">
+              사이트 <span aria-hidden="true">→</span>
+            </a>` : ''}
+          </div>` : ''}
+        </div>
       </div>
     </article>
   `;
@@ -291,6 +315,11 @@ const normalizeTitle = (s) => s.replace(/\s+/g, ' ').trim();
 
 function escapeHtml(s) {
   return s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+}
+
+// md 본문 → HTML: 이스케이프 후 **굵게** 만 지원
+function formatDetailText(s) {
+  return escapeHtml(s).replace(/\*\*(.+?)\*\*/g,'<strong class="font-semibold text-navy-800 dark:text-white">$1</strong>');
 }
 
 function parseProjectDetails(md) {
@@ -337,7 +366,7 @@ const modal = $('#project-modal');
 
 function renderDetailList(items, marker) {
   return items.map((t) => `
-    <li class="flex gap-3"><span aria-hidden="true" class="mt-0.5 shrink-0 text-navy-400 dark:text-sky-300">${marker}</span><span>${escapeHtml(t)}</span></li>
+    <li class="flex gap-3"><span aria-hidden="true" class="mt-0.5 shrink-0 text-navy-400 dark:text-sky-300">${marker}</span><span>${formatDetailText(t)}</span></li>
   `).join('');
 }
 
@@ -355,10 +384,10 @@ function openProjectDetail(p) {
     <div class="flex flex-wrap items-center gap-2 text-xs font-semibold">
       <span class="uppercase tracking-wider text-navy-500 dark:text-sky-300">${p.type}</span>
       <span class="rounded-full bg-navy-500/10 px-2 py-0.5 text-navy-600 dark:bg-white/10 dark:text-navy-100">${p.kind} · ${p.role}</span>
-      <span class="text-navy-500 dark:text-navy-300">${p.period.start} ~ ${p.period.end || '현재'}</span>
+      <span class="text-navy-500 dark:text-navy-300">${p.period.start} ~ ${p.period.end || '현재'} (${formatDuration(p.period)})</span>
     </div>
     <h3 id="project-modal-title" class="mt-3 pr-10 text-xl font-bold leading-snug sm:text-2xl">${p.icon} ${p.title}</h3>
-    ${d.goal ? renderDetailSection('🎯 프로젝트 목표', `<p class="mt-3 leading-relaxed">${escapeHtml(d.goal)}</p>`) : ''}
+    ${d.goal ? renderDetailSection('🎯 프로젝트 목표', `<p class="mt-3 leading-relaxed">${formatDetailText(d.goal)}</p>`) : ''}
     ${d.tasks.length ? renderDetailSection('🛠️ 수행 업무', `<ul class="mt-3 space-y-2 leading-relaxed">${renderDetailList(d.tasks, '•')}</ul>`) : ''}
     ${d.achievements.length ? renderDetailSection('🏆 주요 성과', `<ul class="mt-3 space-y-2 leading-relaxed">${renderDetailList(d.achievements, '✓')}</ul>`) : ''}
   `;
