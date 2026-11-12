@@ -16,10 +16,11 @@
 **콘텐츠는 `script.js` 상단 상수에서 관리한다.** HTML을 직접 고치지 말고 아래 배열을 수정한다.
 - `ROLES` — Hero 타이핑 효과 문구
 - `CAREER` — 소개 섹션 `#career-summary`(소속·직급·역할·입사·근속)와 프로필 카드 `#profile-company`·`#profile-field`에 렌더링. 근속기간은 `joinDate` 기준으로 접속 시점에 자동 계산된다.
+- `HIGHLIGHTS` — 소개 아래 "핵심 성과" 섹션 `#highlights-grid`에 카드로 렌더링(역량 키워드·큰 숫자·문제/해결/결과). `project` 값이 `PROJECTS[].title`과 일치해야 "사례 자세히 보기"가 해당 프로젝트 상세 모달로 연결된다(불일치 시 콘솔 경고).
 - `SKILLS` — `#skills-grid`에 카드로 렌더링
 - `PROJECTS` — `#projects-grid`에 카드로 렌더링. 필터 버튼은 각 항목의 고유한 `type` 값에서 자동 생성되며("전체" 포함), `url`이 비어 있으면 "사이트 방문" 버튼을 생략한다. `kind`(SI/SM/TF)·`role`은 카드 배지로, `period`(`end`가 비면 "현재")는 제목 아래에 표시된다. `gradient`는 Tailwind 클래스 문자열이다.
   - 카드에는 `PROJECTS` 순서(최신순) 기준 번호(`No. 01`~)가 붙고, 필터 옆 `#project-count`에 건수가 표시된다. 번호는 필터를 걸어도 바뀌지 않는다.
-- **`project-details.md`** — 카드 "자세히 보기" 모달(`#project-modal`, `<dialog>`)의 목표·한 일·성과를 여기서 작성한다. `script.js`가 런타임에 fetch해서 파싱하며, `## 번호. 제목`의 제목이 `PROJECTS[].title`과 일치해야 연결된다(번호는 무시, 불일치 시 콘솔 경고). 내용이 있는 프로젝트에만 "자세히 보기"가 생긴다. fetch를 쓰므로 `file://`로 열면 상세 내용이 안 보이고 로컬 서버가 필요하다. GitHub Pages(Jekyll)가 md를 HTML로 변환하지 않도록 루트에 `.nojekyll`을 둔다.
+- **`project-details.md`** — 카드 "자세히 보기" 모달(`#project-modal`, `<dialog>`)의 문제 상황·해결·성과·배운 점을 여기서 작성한다(예전 제목인 목표·한 일은 각각 문제 상황·해결로 읽힌다). 성과의 첫 줄은 프로젝트 카드에도 한 줄로 표시된다. `script.js`가 런타임에 fetch해서 파싱하며, `## 번호. 제목`의 제목이 `PROJECTS[].title`과 일치해야 연결된다(번호는 무시, 불일치 시 콘솔 경고). 내용이 있는 프로젝트에만 "자세히 보기"가 생긴다. fetch를 쓰므로 `file://`로 열면 상세 내용이 안 보이고 로컬 서버가 필요하다. GitHub Pages(Jekyll)가 md를 HTML로 변환하지 않도록 루트에 `.nojekyll`을 둔다.
 
 **스타일링은 두 층으로 나뉜다.**
 - Tailwind는 **Play CDN**(`cdn.tailwindcss.com`)으로 런타임에 동작한다. 그래서 JS 템플릿 문자열 안의 클래스도 별도 설정 없이 적용된다. 커스텀 `navy` 색상 팔레트와 Pretendard 폰트는 `index.html` `<head>`의 인라인 `tailwind.config`에 정의되어 있다.

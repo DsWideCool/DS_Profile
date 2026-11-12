@@ -14,6 +14,42 @@ const CAREER = {
   field: '금융·유통 IT',
 };
 
+// 핵심 성과: "핵심 성과" 섹션 카드 (임원이 3초 안에 볼 대표 사례 3~4개 권장)
+// metric = 크게 보일 숫자, theme = 역량 키워드, project = PROJECTS의 title과 똑같이 (상세 창 연결용)
+// problem/solution/result = 문제·해결·결과 한두 문장
+const HIGHLIGHTS = [
+  {
+    theme: '변화관리 · 협업',
+    metric: '2주',
+    metricLabel: '오픈 일정 단축',
+    title: '인터넷뱅킹 고도화',
+    project: 'NH저축은행 인터넷뱅킹 고도화',
+    problem: '300개가 넘는 메뉴를 6개월 안에 재구성해야 했고, 현업(선릉)과 IT조직(의왕)이 떨어져 있어 의사결정 지연 위험이 컸습니다.',
+    solution: '애자일 스프린트를 도입하고 기획·디자인·개발을 Figma 하나로 묶었으며, 전용 개발공간을 열어 소통 체계를 일원화했습니다.',
+    result: '계획 대비 오픈을 2주 앞당기고, 요구사항 확정과 의사결정 리드타임을 줄였습니다.',
+  },
+  {
+    theme: '리스크 관리 · 사업 성과',
+    metric: '2.5배↑',
+    metricLabel: '상품가입 신청·실행률',
+    title: '모바일웹 상품가입 시스템 구축',
+    project: 'NH저축은행 모바일웹 상품가입 시스템 구축',
+    problem: 'React·Spring Boot 신기술 전환과 함께, 과거 사업에서 겪은 불분명한 요구사항·소통 문제가 재발할 위험이 있었습니다.',
+    solution: '경쟁사 4곳을 제치고 수주한 뒤, 이전 사업의 교훈을 반영한 보수적 WBS로 개발·테스트 기간을 확보하고 아키텍처를 직접 수립했습니다.',
+    result: '기존 사이트 대비 상품가입 신청·실행률을 2.5배 이상 끌어올렸습니다.',
+  },
+  {
+    theme: '위기 대응 · 리더십',
+    metric: '1,000본',
+    metricLabel: '지연 업무 화면 개발 지원',
+    title: '차세대 경제유통 구축 – 유통공통',
+    project: '차세대 경제유통 구축 – 유통공통',
+    problem: '약 20개 업무단위가 공통 기준정보·인터페이스에 의존하는 대형 차세대 사업에서, 일부 업무에 일정 리스크가 발생했습니다.',
+    solution: '공통 표준·모듈·개발 가이드를 먼저 만들어 전 팀에 전파하고, 자체 과업을 조기 완료한 뒤 지연 업무에 팀을 투입했습니다.',
+    result: '가장 먼저 테스트를 완료하고 조회 화면 약 1,000본을 지원해 전체 오픈 일정을 지켰으며, 야근 없는 팀 운영을 실현했습니다.',
+  },
+];
+
 // 기술 스택: 카테고리별로 항목을 추가/삭제하세요
 const SKILLS = [
   { category: '프로젝트 관리', icon: '📋', items: ['일정·범위 관리', '요구사항 분석', '이해관계자 커뮤니케이션', '리스크 관리', '사업 제안', 'TF 운영'] },
@@ -203,6 +239,35 @@ $('#career-summary').innerHTML = careerItems.map((c) => `
 $('#profile-field').textContent = CAREER.field;
 $('#profile-company').textContent = CAREER.company;
 
+// ----- 핵심 성과 렌더링 -----
+// 한 번만 렌더링하므로 .reveal 사용 가능 (프로젝트 카드처럼 다시 그리지 않음)
+const highlightRows = [
+  ['문제', 'problem', 'text-rose-500 dark:text-rose-300'],
+  ['해결', 'solution', 'text-navy-500 dark:text-sky-300'],
+  ['결과', 'result', 'text-emerald-600 dark:text-emerald-300'],
+];
+$('#highlights-grid').innerHTML = HIGHLIGHTS.map((h, i) => `
+  <article class="glass glass-hover reveal flex flex-col rounded-2xl p-6 sm:p-7">
+    <span class="self-start rounded-full bg-navy-500/10 px-3 py-1 text-xs font-semibold text-navy-600 dark:bg-white/10 dark:text-sky-200">${h.theme}</span>
+    <p class="mt-5 bg-gradient-to-r from-navy-500 to-sky-400 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent dark:from-navy-200 dark:to-sky-300">${h.metric}</p>
+    <p class="mt-1 text-sm font-semibold text-navy-600 dark:text-navy-200">${h.metricLabel}</p>
+    <h3 class="mt-4 border-t border-white/60 pt-4 font-bold leading-snug dark:border-white/10">${h.title}</h3>
+    <dl class="mt-4 flex-1 space-y-3 text-sm leading-relaxed text-navy-800 dark:text-navy-100">
+      ${highlightRows.map(([label, key, color]) => `
+      <div>
+        <dt class="text-xs font-bold ${color}">${label}</dt>
+        <dd class="mt-0.5">${h[key]}</dd>
+      </div>`).join('')}
+    </dl>
+    <button type="button" data-highlight="${i}" class="btn-glass mt-6 self-start rounded-full px-4 py-2 text-sm font-semibold">
+      사례 자세히 보기 <span aria-hidden="true">→</span>
+    </button>
+  </article>
+`).join('');
+HIGHLIGHTS.forEach((h) => {
+  if (!PROJECTS.some((p) => p.title === h.project)) console.warn(`[HIGHLIGHTS] 일치하는 프로젝트 제목이 없습니다: ${h.project}`);
+});
+
 // ----- 기술 스택 렌더링 -----
 $('#skills-grid').innerHTML = SKILLS.map((s) => `
   <div class="glass glass-hover reveal rounded-2xl p-6">
@@ -258,6 +323,10 @@ function renderProjects(filter) {
           </div>
           <h3 class="mt-2 text-lg font-bold leading-snug">${p.title}</h3>
           <p class="mt-2 text-sm leading-relaxed text-navy-700/80 dark:text-navy-200/80">${p.description}</p>
+          ${p.detail?.achievements[0] ? `
+          <p class="mt-2 flex gap-1.5 text-sm font-medium text-emerald-700 dark:text-emerald-300">
+            <span aria-hidden="true">🏆</span><span class="line-clamp-2">${formatDetailText(p.detail.achievements[0])}</span>
+          </p>` : ''}
           <ul class="mt-3 flex flex-wrap gap-2">
             ${p.tags.map((t) => `<li class="rounded-md bg-white/50 px-2 py-1 text-xs text-navy-700 dark:bg-white/10 dark:text-navy-100">#${t}</li>`).join('')}
           </ul>
@@ -308,9 +377,14 @@ renderFilters();
 renderProjects(activeFilter);
 
 // ----- 프로젝트 상세 내용 불러오기 (project-details.md) -----
-// "## 번호. 제목" 으로 프로젝트를 구분하고, "### 목표/한 일/성과" 아래 내용을 읽는다
+// "## 번호. 제목" 으로 프로젝트를 구분하고, "### 문제 상황/해결/성과/배운 점" 아래 내용을 읽는다
+// 예전 형식("### 목표/한 일")도 각각 문제 상황/해결로 읽는다
 const DETAIL_FILE = 'project-details.md';
-const DETAIL_SECTIONS = [['목표', 'goal'], ['한일', 'tasks'], ['수행', 'tasks'], ['성과', 'achievements']];
+const DETAIL_SECTIONS = [
+  ['문제', 'problem'], ['목표', 'problem'],
+  ['해결', 'solution'], ['한일', 'solution'], ['수행', 'solution'],
+  ['성과', 'achievements'], ['배운', 'lessons'],
+];
 const normalizeTitle = (s) => s.replace(/\s+/g, ' ').trim();
 
 function escapeHtml(s) {
@@ -329,7 +403,7 @@ function parseProjectDetails(md) {
   md.replace(/<!--[\s\S]*?-->/g, '').split(/\r?\n/).forEach((raw) => {
     const line = raw.trim();
     if (line.startsWith('## ')) {
-      current = { goal: '', tasks: [], achievements: [] };
+      current = { problem: '', solution: [], achievements: [], lessons: [] };
       key = null;
       details.set(normalizeTitle(line.slice(3).replace(/^\d+\.\s*/, '')), current);
     } else if (line.startsWith('### ')) {
@@ -338,7 +412,7 @@ function parseProjectDetails(md) {
     } else if (current && key) {
       const text = line.replace(/^[-*]\s*/, '').trim();
       if (!text) return;
-      if (key === 'goal') current.goal += (current.goal ? ' ' : '') + text;
+      if (key === 'problem') current.problem += (current.problem ? ' ' : '') + text;
       else current[key].push(text);
     }
   });
@@ -355,7 +429,7 @@ fetch(DETAIL_FILE, { cache: 'no-cache' })
     });
     PROJECTS.forEach((p) => {
       const d = details.get(normalizeTitle(p.title));
-      if (d && (d.goal || d.tasks.length || d.achievements.length)) p.detail = d;
+      if (d && (d.problem || d.solution.length || d.achievements.length || d.lessons.length)) p.detail = d;
     });
     renderProjects(activeFilter);
   })
@@ -387,9 +461,10 @@ function openProjectDetail(p) {
       <span class="text-navy-500 dark:text-navy-300">${p.period.start} ~ ${p.period.end || '현재'} (${formatDuration(p.period)})</span>
     </div>
     <h3 id="project-modal-title" class="mt-3 pr-10 text-xl font-bold leading-snug sm:text-2xl">${p.icon} ${p.title}</h3>
-    ${d.goal ? renderDetailSection('🎯 프로젝트 목표', `<p class="mt-3 leading-relaxed">${formatDetailText(d.goal)}</p>`) : ''}
-    ${d.tasks.length ? renderDetailSection('🛠️ 수행 업무', `<ul class="mt-3 space-y-2 leading-relaxed">${renderDetailList(d.tasks, '•')}</ul>`) : ''}
-    ${d.achievements.length ? renderDetailSection('🏆 주요 성과', `<ul class="mt-3 space-y-2 leading-relaxed">${renderDetailList(d.achievements, '✓')}</ul>`) : ''}
+    ${d.problem ? renderDetailSection('🧩 문제 상황', `<p class="mt-3 leading-relaxed">${formatDetailText(d.problem)}</p>`) : ''}
+    ${d.solution.length ? renderDetailSection('🛠️ 해결', `<ul class="mt-3 space-y-2 leading-relaxed">${renderDetailList(d.solution, '•')}</ul>`) : ''}
+    ${d.achievements.length ? renderDetailSection('🏆 성과', `<ul class="mt-3 space-y-2 leading-relaxed">${renderDetailList(d.achievements, '✓')}</ul>`) : ''}
+    ${d.lessons.length ? renderDetailSection('💡 배운 점', `<ul class="mt-3 space-y-2 leading-relaxed">${renderDetailList(d.lessons, '–')}</ul>`) : ''}
   `;
   modal.showModal();
   document.documentElement.classList.add('overflow-hidden');
@@ -400,6 +475,15 @@ $('#projects-grid').addEventListener('click', (e) => {
   if (e.target.closest('a')) return;
   const card = e.target.closest('[data-project]');
   if (card) openProjectDetail(PROJECTS[Number(card.dataset.project)]);
+});
+
+// 핵심 성과 카드 → 연결된 프로젝트 상세 창
+$('#highlights-grid').addEventListener('click', (e) => {
+  const btn = e.target.closest('[data-highlight]');
+  if (!btn) return;
+  const p = PROJECTS.find((x) => x.title === HIGHLIGHTS[Number(btn.dataset.highlight)].project);
+  if (p?.detail) openProjectDetail(p);
+  else showToast('상세 내용을 불러오지 못했어요. 프로젝트 목록에서 확인해 주세요.');
 });
 
 $('#project-modal-close').addEventListener('click', () => modal.close());
