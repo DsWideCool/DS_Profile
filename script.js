@@ -18,7 +18,7 @@ const CAREER = {
 const SKILLS = [
   { category: '프로젝트 관리', icon: '📋', items: ['일정·범위 관리', '요구사항 분석', '이해관계자 커뮤니케이션', '리스크 관리', '사업 제안', 'TF 운영'] },
   { category: 'AI·협업 트렌드', icon: '🤖', items: ['AI 활용', 'AX 전략', 'Claude Code', 'MCP', 'Git', 'Slack'] },
-  { category: '금융 IT', icon: '🏦', items: ['인터넷뱅킹', '모바일웹 상품가입', '비대면채널 모니터링', '웹 접근성', '채권 트레이딩 시스템'] },
+  { category: '금융 IT', icon: '🏦', items: ['인터넷뱅킹', '모바일웹 상품가입', '비대면채널 모니터링', '웹 접근성'] },
   { category: '유통·물류 IT', icon: '📦', items: ['WMS(창고관리)', '물류센터 자동화', 'POG·진열관리', '자동수발주', 'POP', '물류 BPR'] },
   { category: '시스템 운영 (SM)', icon: '🛠️', items: ['운영·유지보수', '인터페이스(IF) 연계', '전자세금계산서', '회계·사무관리', 'KMS', 'CMS', 'CRM'] },
   { category: '프론트엔드', icon: '🎨', items: ['HTML', 'CSS', 'JavaScript', 'TypeScript', 'React', 'Next.js', 'Vite', '반응형 웹'] },
@@ -30,7 +30,7 @@ const SKILLS = [
 // 프로젝트: 항목 하나 = 카드 하나. type 값이 필터 버튼이 됩니다 (최신순으로 작성)
 // kind = 사업 구분(SI/SM/TF), role = 담당 역할, period = 수행 기간(end가 비어 있으면 "현재")
 // gradient = 카드 상단 배경색 (Tailwind 클래스)
-// detail(선택) = 카드 클릭 시 모달로 표시되는 상세 내용 { goal, tasks: [], achievements: [] }
+// 카드의 "자세히 보기" 상세 내용(목표·한 일·성과)은 project-details.md 에서 작성합니다 (제목으로 연결)
 const PROJECTS = [
   {
     title: 'NH저축은행 비대면채널 모니터링 및 고객접근성 확대 구축',
@@ -40,25 +40,6 @@ const PROJECTS = [
     tags: ['비대면채널', '대시보드', '여신', '저축은행'],
     url: '',
     icon: '📡',
-    detail: {
-      goal: 'NH저축은행 비대면(모바일)채널 고객 접근이력 대시보드 시스템 개발과 모바일웹/앱/올원 웹뷰의 여신서비스 고도화 개발',
-      tasks: [
-        '프로젝트 총괄 PM으로서 범위·일정·품질·리스크를 통합 관리',
-        '현업·IT부서·개발팀 등 이해관계자 간 요구사항 조율과 주요 의사결정 주도',
-        '요구사항 정의 및 변경 통제를 통한 사업 범위 관리',
-        'WBS 기반 일정 수립과 주간 진척 점검으로 이슈·리스크를 선제적으로 식별하고 대응',
-        '대시보드·여신서비스 과제별 설계 검토와 단계별 테스트 품질 관리',
-        '금융 보안·개인정보 보호 요건 준수 점검',
-        '오픈을 위한 이행 계획 수립, 리허설 및 비상 대응 체계 준비',
-      ],
-      achievements: [
-        '기술적인 이슈 및 결함 없이 계획된 일정에 따라 순차 진행 중',
-        '시스템 오픈 후 고객 정상 인도 예정',
-        '고객 접근이력 대시보드로 비대면채널 이용 현황을 데이터 기반으로 파악할 수 있는 기반 마련',
-        '모바일웹·앱·올원 웹뷰 여신서비스 고도화로 채널 간 일관된 고객 경험 제공',
-        '정기 보고와 투명한 진척 공유로 고객사와의 신뢰 관계 강화',
-      ],
-    },
     gradient: 'from-navy-400 to-sky-300',
   },
   {
@@ -80,16 +61,6 @@ const PROJECTS = [
     url: 'https://m.nhsavingsbank.co.kr',
     icon: '📱',
     gradient: 'from-sky-400 to-teal-300',
-  },
-  {
-    title: '은행 국채전문유통시장 접속 및 인프라·트레이딩 시스템 구축 제안',
-    description: '국채전문유통시장 접속 및 인프라·트레이딩 시스템 구축 사업 제안',
-    type: '금융', kind: 'SI', role: '제안',
-    period: { start: '2025.02', end: '2025.04' },
-    tags: ['국채', '트레이딩', '인프라', '사업제안'],
-    url: '',
-    icon: '📈',
-    gradient: 'from-indigo-400 to-sky-300',
   },
   {
     title: '농협물류 NH-WMS TF 총괄 / IF 연계 업무지원',
@@ -246,9 +217,18 @@ $('#skills-grid').innerHTML = SKILLS.map((s) => `
 // ----- 프로젝트 렌더링 + 필터 -----
 function renderProjects(filter) {
   const list = filter === '전체' ? PROJECTS : PROJECTS.filter((p) => p.type === filter);
-  $('#projects-grid').innerHTML = list.map((p) => `
-    <article ${p.detail ? `data-project="${PROJECTS.indexOf(p)}"` : ''} class="glass glass-hover group flex flex-col overflow-hidden rounded-2xl ${p.detail ? 'cursor-pointer' : ''}">
+  // 건수 표시: 필터를 걸면 해당 분야 건수와 전체 건수를 함께 보여줌
+  $('#project-count').innerHTML = filter === '전체'
+    ? `총 <strong class="text-navy-700 dark:text-white">${PROJECTS.length}</strong>건`
+    : `${filter} <strong class="text-navy-700 dark:text-white">${list.length}</strong>건 · 전체 ${PROJECTS.length}건`;
+  $('#projects-grid').innerHTML = list.map((p) => {
+    const index = PROJECTS.indexOf(p);
+    // 번호는 PROJECTS 순서(최신순) 기준이라 필터를 걸어도 바뀌지 않음
+    const no = String(index + 1).padStart(2, '0');
+    return `
+    <article ${p.detail ? `data-project="${index}"` : ''} class="glass glass-hover group flex flex-col overflow-hidden rounded-2xl ${p.detail ? 'cursor-pointer' : ''}">
       <div class="relative h-44 overflow-hidden bg-gradient-to-br ${p.gradient}">
+        <span class="absolute left-4 top-4 rounded-full border border-white/60 bg-white/60 px-3 py-1 text-xs font-bold text-navy-700 shadow-sm backdrop-blur-md">No. ${no}</span>
         <div class="absolute -right-8 -top-8 h-36 w-36 rounded-full bg-white/40 blur-2xl transition duration-500 group-hover:scale-125"></div>
         <div class="absolute -bottom-12 left-2 h-32 w-32 rounded-full bg-white/25 blur-2xl"></div>
         <span class="absolute inset-0 m-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-white/60 bg-white/30 text-3xl shadow-lg backdrop-blur-md transition duration-300 group-hover:scale-110">${p.icon}</span>
@@ -277,7 +257,8 @@ function renderProjects(filter) {
         </div>` : ''}
       </div>
     </article>
-  `).join('');
+  `;
+  }).join('');
 }
 
 const types = ['전체', ...new Set(PROJECTS.map((p) => p.type))];
@@ -302,13 +283,70 @@ filterBox.addEventListener('click', (e) => {
 renderFilters();
 renderProjects(activeFilter);
 
+// ----- 프로젝트 상세 내용 불러오기 (project-details.md) -----
+// "## 번호. 제목" 으로 프로젝트를 구분하고, "### 목표/한 일/성과" 아래 내용을 읽는다
+const DETAIL_FILE = 'project-details.md';
+const DETAIL_SECTIONS = [['목표', 'goal'], ['한일', 'tasks'], ['수행', 'tasks'], ['성과', 'achievements']];
+const normalizeTitle = (s) => s.replace(/\s+/g, ' ').trim();
+
+function escapeHtml(s) {
+  return s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+}
+
+function parseProjectDetails(md) {
+  const details = new Map();
+  let current = null;
+  let key = null;
+  md.replace(/<!--[\s\S]*?-->/g, '').split(/\r?\n/).forEach((raw) => {
+    const line = raw.trim();
+    if (line.startsWith('## ')) {
+      current = { goal: '', tasks: [], achievements: [] };
+      key = null;
+      details.set(normalizeTitle(line.slice(3).replace(/^\d+\.\s*/, '')), current);
+    } else if (line.startsWith('### ')) {
+      const name = line.slice(4).replace(/\s/g, '');
+      key = DETAIL_SECTIONS.find(([word]) => name.includes(word))?.[1] ?? null;
+    } else if (current && key) {
+      const text = line.replace(/^[-*]\s*/, '').trim();
+      if (!text) return;
+      if (key === 'goal') current.goal += (current.goal ? ' ' : '') + text;
+      else current[key].push(text);
+    }
+  });
+  return details;
+}
+
+fetch(DETAIL_FILE, { cache: 'no-cache' })
+  .then((res) => (res.ok ? res.text() : Promise.reject(new Error(`HTTP ${res.status}`))))
+  .then((md) => {
+    const details = parseProjectDetails(md);
+    const titles = new Set(PROJECTS.map((p) => normalizeTitle(p.title)));
+    details.forEach((_, title) => {
+      if (!titles.has(title)) console.warn(`[${DETAIL_FILE}] 일치하는 프로젝트 제목이 없습니다: ${title}`);
+    });
+    PROJECTS.forEach((p) => {
+      const d = details.get(normalizeTitle(p.title));
+      if (d && (d.goal || d.tasks.length || d.achievements.length)) p.detail = d;
+    });
+    renderProjects(activeFilter);
+  })
+  .catch((err) => console.warn(`${DETAIL_FILE}을(를) 불러오지 못했습니다. 로컬 서버로 열었는지 확인하세요.`, err));
+
 // ----- 프로젝트 상세 모달 -----
 const modal = $('#project-modal');
 
 function renderDetailList(items, marker) {
   return items.map((t) => `
-    <li class="flex gap-3"><span aria-hidden="true" class="mt-0.5 shrink-0 text-navy-400 dark:text-sky-300">${marker}</span><span>${t}</span></li>
+    <li class="flex gap-3"><span aria-hidden="true" class="mt-0.5 shrink-0 text-navy-400 dark:text-sky-300">${marker}</span><span>${escapeHtml(t)}</span></li>
   `).join('');
+}
+
+function renderDetailSection(title, body) {
+  return `
+    <section class="mt-8">
+      <h4 class="text-sm font-bold text-navy-500 dark:text-sky-300">${title}</h4>
+      ${body}
+    </section>`;
 }
 
 function openProjectDetail(p) {
@@ -320,18 +358,9 @@ function openProjectDetail(p) {
       <span class="text-navy-500 dark:text-navy-300">${p.period.start} ~ ${p.period.end || '현재'}</span>
     </div>
     <h3 id="project-modal-title" class="mt-3 pr-10 text-xl font-bold leading-snug sm:text-2xl">${p.icon} ${p.title}</h3>
-    <section class="mt-8">
-      <h4 class="text-sm font-bold text-navy-500 dark:text-sky-300">🎯 프로젝트 목표</h4>
-      <p class="mt-3 leading-relaxed">${d.goal}</p>
-    </section>
-    <section class="mt-8">
-      <h4 class="text-sm font-bold text-navy-500 dark:text-sky-300">🛠️ 수행 업무</h4>
-      <ul class="mt-3 space-y-2 leading-relaxed">${renderDetailList(d.tasks, '•')}</ul>
-    </section>
-    <section class="mt-8">
-      <h4 class="text-sm font-bold text-navy-500 dark:text-sky-300">🏆 주요 성과</h4>
-      <ul class="mt-3 space-y-2 leading-relaxed">${renderDetailList(d.achievements, '✓')}</ul>
-    </section>
+    ${d.goal ? renderDetailSection('🎯 프로젝트 목표', `<p class="mt-3 leading-relaxed">${escapeHtml(d.goal)}</p>`) : ''}
+    ${d.tasks.length ? renderDetailSection('🛠️ 수행 업무', `<ul class="mt-3 space-y-2 leading-relaxed">${renderDetailList(d.tasks, '•')}</ul>`) : ''}
+    ${d.achievements.length ? renderDetailSection('🏆 주요 성과', `<ul class="mt-3 space-y-2 leading-relaxed">${renderDetailList(d.achievements, '✓')}</ul>`) : ''}
   `;
   modal.showModal();
   document.documentElement.classList.add('overflow-hidden');

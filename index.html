@@ -167,7 +167,10 @@
     <section id="projects" class="px-4 py-24 sm:px-6">
       <div class="mx-auto max-w-5xl">
         <h2 class="section-title reveal">프로젝트</h2>
-        <div id="project-filters" class="reveal mt-8 flex flex-wrap gap-2"></div>
+        <div class="reveal mt-8 flex flex-wrap items-center justify-between gap-4">
+          <div id="project-filters" class="flex flex-wrap gap-2"></div>
+          <p id="project-count" class="text-sm text-navy-500 dark:text-navy-300"></p>
+        </div>
         <!-- script.js 의 PROJECTS 배열로 채워집니다 -->
         <div id="projects-grid" class="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3"></div>
       </div>
