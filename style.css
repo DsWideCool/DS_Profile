@@ -1,182 +1,143 @@
-/* Tailwind CDN으로 처리하기 어려운 스타일만 모아둔 파일 */
+/* Tailwind CDN으로 처리하기 어려운 스타일만 모아둔 파일
+   색상은 index.html tailwind.config 의 navy 팔레트와 Tailwind slate 값을 hex/rgb로 맞춰 둠
+   (팔레트를 바꾸면 이 파일도 함께 수정) */
 
-/* ----- 유리 패널 (글래스모피즘) ----- */
-.glass {
-  background: rgb(255 255 255 / 0.45);
-  border: 1px solid rgb(255 255 255 / 0.65);
-  box-shadow: 0 8px 32px rgb(61 90 173 / 0.1), inset 0 1px 0 rgb(255 255 255 / 0.7);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
+/* ----- 카드: 흰 바탕 + 가는 테두리 ----- */
+.card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
 }
-.dark .glass {
-  background: rgb(255 255 255 / 0.06);
-  border-color: rgb(255 255 255 / 0.12);
-  box-shadow: 0 8px 32px rgb(0 0 0 / 0.2), inset 0 1px 0 rgb(255 255 255 / 0.08);
+.dark .card {
+  background: #111a2e;
+  border-color: rgb(255 255 255 / 0.08);
 }
-.glass-hover {
-  transition: transform 0.25s, box-shadow 0.25s, background 0.25s;
+.card-hover {
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
-.glass.glass-hover:hover {
-  transform: translateY(-4px);
-  background: rgb(255 255 255 / 0.6);
-  box-shadow: 0 16px 40px rgb(61 90 173 / 0.18), inset 0 1px 0 rgb(255 255 255 / 0.8);
+.card-hover:hover {
+  border-color: #96b0e4;
+  box-shadow: 0 12px 32px -16px rgb(36 51 94 / 0.25);
 }
-.dark .glass.glass-hover:hover {
-  background: rgb(255 255 255 / 0.1);
+.dark .card-hover:hover {
+  border-color: rgb(150 176 228 / 0.45);
+  box-shadow: none;
 }
 
 /* ----- 프로젝트 상세 모달 ----- */
-/* 배경 위에 떠도 글자가 잘 읽히도록 .glass 보다 불투명하게 */
-.glass-modal {
-  background: rgb(246 249 255 / 0.92);
-  border: 1px solid rgb(255 255 255 / 0.8);
-  box-shadow: 0 24px 64px rgb(36 51 94 / 0.25);
-  backdrop-filter: blur(24px) saturate(160%);
-  -webkit-backdrop-filter: blur(24px) saturate(160%);
+.modal-surface {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 24px 64px rgb(15 23 42 / 0.25);
 }
-.dark .glass-modal {
-  background: rgb(26 37 70 / 0.94);
-  border-color: rgb(255 255 255 / 0.12);
+.dark .modal-surface {
+  background: #111a2e;
+  border-color: rgb(255 255 255 / 0.1);
   box-shadow: 0 24px 64px rgb(0 0 0 / 0.5);
 }
 #project-modal::backdrop {
-  background: rgb(15 23 42 / 0.45);
-  backdrop-filter: blur(4px);
+  background: rgb(15 23 42 / 0.55);
 }
-#project-modal[open] { animation: modal-in 0.25s ease; }
+#project-modal[open] { animation: modal-in 0.2s ease; }
 @keyframes modal-in {
-  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+  from { opacity: 0; transform: translateY(8px); }
 }
 
 /* ----- 헤더 네비게이션 ----- */
-.glass-nav {
-  background: rgb(255 255 255 / 0.55);
-  border: 1px solid rgb(255 255 255 / 0.7);
-  box-shadow: 0 4px 24px rgb(61 90 173 / 0.08);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  transition: background 0.3s, box-shadow 0.3s;
+.nav-surface {
+  background: rgb(255 255 255 / 0.92);
+  border-bottom: 1px solid transparent;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
-.dark .glass-nav {
-  background: rgb(36 51 94 / 0.55);
-  border-color: rgb(255 255 255 / 0.12);
-  box-shadow: 0 4px 24px rgb(0 0 0 / 0.2);
+.dark .nav-surface { background: rgb(11 17 32 / 0.88); }
+#navbar.scrolled .nav-surface {
+  border-bottom-color: #e2e8f0;
+  box-shadow: 0 1px 12px rgb(15 23 42 / 0.04);
 }
-#navbar.scrolled .glass-nav {
-  background: rgb(255 255 255 / 0.75);
-  box-shadow: 0 8px 30px rgb(61 90 173 / 0.14);
-}
-.dark #navbar.scrolled .glass-nav {
-  background: rgb(36 51 94 / 0.8);
-}
+.dark #navbar.scrolled .nav-surface { border-bottom-color: rgb(255 255 255 / 0.08); }
 
 .nav-link {
+  position: relative;
   display: block;
-  padding: 0.45rem 0.9rem;
-  border-radius: 9999px;
-  color: #33498d;
-  transition: background 0.2s, color 0.2s;
+  padding: 0.5rem 0.75rem;
+  color: #475569;
+  transition: color 0.2s;
 }
-.dark .nav-link { color: #c0d0f0; }
-.nav-link:hover { background: rgb(255 255 255 / 0.5); }
-.dark .nav-link:hover { background: rgb(255 255 255 / 0.08); }
-.nav-link.active {
-  background: rgb(77 111 198 / 0.14);
-  color: #3d5aad;
-  font-weight: 600;
+.nav-link:hover { color: #24335e; }
+.dark .nav-link { color: #94a3b8; }
+.dark .nav-link:hover { color: #fff; }
+.nav-link.active { color: #24335e; font-weight: 600; }
+.dark .nav-link.active { color: #fff; }
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  left: 0.75rem;
+  right: 0.75rem;
+  bottom: 0;
+  height: 2px;
+  background: #33498d;
 }
-.dark .nav-link.active {
-  background: rgb(255 255 255 / 0.14);
-  color: #fff;
-}
+.dark .nav-link.active::after { background: #96b0e4; }
 
-/* ----- 투명 버튼 ----- */
-.btn-glass {
-  color: #33498d;
-  background: rgb(255 255 255 / 0.35);
-  border: 1px solid rgb(255 255 255 / 0.7);
-  box-shadow: 0 4px 16px rgb(61 90 173 / 0.08), inset 0 1px 0 rgb(255 255 255 / 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  transition: background 0.2s, transform 0.2s, box-shadow 0.2s, opacity 0.2s;
-}
-.btn-glass:hover {
-  background: rgb(255 255 255 / 0.6);
-  transform: translateY(-2px);
-}
-.dark .btn-glass {
-  color: #dde6f7;
-  background: rgb(255 255 255 / 0.07);
-  border-color: rgb(255 255 255 / 0.16);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
-}
-.dark .btn-glass:hover { background: rgb(255 255 255 / 0.14); }
-
+/* ----- 버튼 ----- */
 .btn-primary {
   color: #fff;
-  background: linear-gradient(135deg, rgb(108 142 214 / 0.9), rgb(77 111 198 / 0.9));
-  border: 1px solid rgb(255 255 255 / 0.35);
-  box-shadow: 0 8px 24px rgb(77 111 198 / 0.35), inset 0 1px 0 rgb(255 255 255 / 0.35);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+  background: #2b3d73;
+  border: 1px solid #2b3d73;
+  transition: background 0.2s, border-color 0.2s;
 }
-.btn-primary:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.08);
-  box-shadow: 0 12px 28px rgb(77 111 198 / 0.45), inset 0 1px 0 rgb(255 255 255 / 0.35);
-}
+.btn-primary:hover { background: #24335e; border-color: #24335e; }
+.dark .btn-primary { background: #4d6fc6; border-color: #4d6fc6; }
+.dark .btn-primary:hover { background: #6c8ed6; border-color: #6c8ed6; }
 
-/* ----- 섹션 제목 ----- */
+.btn-outline {
+  color: #24335e;
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.btn-outline:hover { background: #f8fafc; border-color: #94a3b8; }
+.dark .btn-outline {
+  color: #e2e8f0;
+  background: transparent;
+  border-color: rgb(255 255 255 / 0.16);
+}
+.dark .btn-outline:hover { background: rgb(255 255 255 / 0.06); border-color: rgb(255 255 255 / 0.3); }
+
+/* 프로젝트 필터: 선택된 버튼은 aria-pressed 로 표시 */
+.btn-outline[aria-pressed="true"] { color: #fff; background: #2b3d73; border-color: #2b3d73; }
+.dark .btn-outline[aria-pressed="true"] { color: #fff; background: #4d6fc6; border-color: #4d6fc6; }
+
+/* ----- 섹션 머리말 ----- */
+.eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #3d5aad;
+}
+.dark .eyebrow { color: #96b0e4; }
 .section-title {
-  font-size: 2rem;
+  margin-top: 0.5rem;
+  font-size: 1.875rem;
   font-weight: 800;
-  letter-spacing: -0.02em;
-}
-.section-title::after {
-  content: '';
-  display: block;
-  width: 3rem;
-  height: 4px;
-  margin-top: 0.75rem;
-  border-radius: 9999px;
-  background: linear-gradient(90deg, #4d6fc6, #38bdf8);
+  line-height: 1.25;
+  letter-spacing: -0.025em;
 }
 
-/* ----- 배경 빛 / 카드 둥실 효과 ----- */
-.blob { animation: drift 18s ease-in-out infinite alternate; }
-.blob-2 { animation-duration: 22s; animation-delay: -6s; }
-.blob-3 { animation-duration: 26s; animation-delay: -12s; }
-@keyframes drift {
-  to { transform: translate(40px, -30px) scale(1.08); }
-}
-.float { animation: float 6s ease-in-out infinite; }
-@keyframes float {
-  50% { transform: translateY(-10px); }
-}
-
-/* ----- 스크롤 등장 애니메이션 ----- */
+/* ----- 스크롤 등장 애니메이션 (절제된 움직임) ----- */
 .reveal {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  transform: translateY(12px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
 .reveal.visible {
   opacity: 1;
   transform: none;
 }
-.reveal.glass-hover {
-  transition: opacity 0.7s ease, transform 0.4s ease, box-shadow 0.25s, background 0.25s;
-}
-
-/* ----- 타이핑 커서 ----- */
-.caret {
-  margin-left: 2px;
-  color: #6c8ed6;
-  animation: blink 1s step-end infinite;
-}
-@keyframes blink {
-  50% { opacity: 0; }
+.reveal.card-hover {
+  transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.2s, box-shadow 0.2s;
 }
 
 /* ----- 버튼 표시 상태 (맨 위로, 토스트) ----- */
@@ -188,5 +149,5 @@
 
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
-  .caret, .blob, .float, #project-modal[open] { animation: none; }
+  #project-modal[open] { animation: none; }
 }

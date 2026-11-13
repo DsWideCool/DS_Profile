@@ -4,10 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>민두성 | 프로젝트 매니저</title>
-  <meta name="description" content="프로젝트 매니저 민두성의 프로필 & 포트폴리오" />
+  <meta name="description" content="금융·유통 IT 프로젝트 매니저 민두성의 프로필 & 포트폴리오" />
 
   <!-- 다크모드 깜빡임 방지: 렌더링 전에 테마 적용 -->
   <script>
+    // 새로고침·뒤로가기 시 이전 스크롤 위치 복원을 막는다 (항상 상단에서 시작, script.js 참고)
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     try {
       const saved = localStorage.getItem('theme');
       if (saved === 'dark' || (!saved && matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -25,7 +27,7 @@
         extend: {
           fontFamily: { sans: ['"Pretendard Variable"', 'Pretendard', 'system-ui', 'sans-serif'] },
           colors: {
-            // 밝은 남색(Navy) 팔레트
+            // 남색(Navy) 팔레트: 포인트 색. 중립색은 Tailwind slate 사용
             navy: {
               50: '#f0f4fc', 100: '#dde6f7', 200: '#c0d0f0', 300: '#96b0e4', 400: '#6c8ed6',
               500: '#4d6fc6', 600: '#3d5aad', 700: '#33498d', 800: '#2b3d73', 900: '#24335e', 950: '#1a2547',
@@ -37,187 +39,207 @@
   </script>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body class="bg-navy-50 text-navy-900 dark:bg-navy-950 dark:text-navy-50 font-sans antialiased transition-colors">
-
-  <!-- ===== 배경: 은은하게 번지는 빛 ===== -->
-  <div aria-hidden="true" class="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-    <div class="blob absolute -left-32 -top-32 h-[28rem] w-[28rem] rounded-full bg-navy-300/50 blur-3xl dark:bg-navy-500/30"></div>
-    <div class="blob blob-2 absolute right-[-8rem] top-1/4 h-[26rem] w-[26rem] rounded-full bg-sky-200/60 blur-3xl dark:bg-sky-500/20"></div>
-    <div class="blob blob-3 absolute bottom-[-10rem] left-1/3 h-[30rem] w-[30rem] rounded-full bg-indigo-200/50 blur-3xl dark:bg-indigo-400/20"></div>
-  </div>
+<body class="bg-slate-50 font-sans text-slate-800 antialiased dark:bg-[#0b1120] dark:text-slate-200">
 
   <!-- ===== 헤더 / 네비게이션 ===== -->
-  <header id="navbar" class="fixed inset-x-0 top-0 z-50 px-4 pt-3 sm:px-6">
-    <nav class="glass-nav mx-auto flex max-w-5xl items-center justify-between rounded-2xl px-3 py-2.5 sm:px-4" aria-label="주 메뉴">
-      <a href="#home" class="flex items-center gap-2.5">
-        <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-navy-400 to-navy-600 text-base font-extrabold text-white shadow-md shadow-navy-500/30">민</span>
-        <span class="hidden text-sm font-bold tracking-tight lg:inline">Project Manager</span>
-      </a>
+  <header id="navbar" class="fixed inset-x-0 top-0 z-50">
+    <div class="nav-surface">
+      <nav class="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 sm:px-6" aria-label="주 메뉴">
+        <a href="#home" class="flex items-center gap-2.5">
+          <span class="flex h-8 w-8 items-center justify-center rounded-md bg-navy-800 text-sm font-bold text-white dark:bg-navy-500">민</span>
+          <span class="text-sm font-bold tracking-tight text-navy-950 dark:text-white">민두성<span class="ml-1.5 hidden font-medium text-slate-400 sm:inline">Project Manager</span></span>
+        </a>
 
-      <ul class="hidden items-center gap-1 text-sm font-medium sm:flex">
-        <li><a href="#home" class="nav-link">홈</a></li>
-        <li><a href="#about" class="nav-link">소개</a></li>
-        <li><a href="#highlights" class="nav-link">성과</a></li>
-        <li><a href="#skills" class="nav-link">기술</a></li>
-        <li><a href="#projects" class="nav-link">프로젝트</a></li>
-        <li><a href="#contact" class="nav-link">연락처</a></li>
-      </ul>
+        <ul class="hidden items-center text-sm md:flex">
+          <li><a href="#home" class="nav-link">홈</a></li>
+          <li><a href="#about" class="nav-link">소개</a></li>
+          <li><a href="#highlights" class="nav-link">성과</a></li>
+          <li><a href="#skills" class="nav-link">역량</a></li>
+          <li><a href="#projects" class="nav-link">프로젝트</a></li>
+          <li><a href="#publications" class="nav-link">논문</a></li>
+          <li><a href="#contact" class="nav-link">연락처</a></li>
+        </ul>
 
-      <div class="flex items-center gap-1.5">
-        <a href="#contact" class="btn-primary hidden rounded-full px-4 py-2 text-sm font-semibold md:inline-flex">연락하기</a>
-        <button id="theme-toggle" aria-label="다크모드 전환" class="btn-glass rounded-full p-2">
-          <svg class="hidden h-5 w-5 dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-          <svg class="h-5 w-5 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-        </button>
-        <button id="menu-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mobile-menu" class="btn-glass rounded-full p-2 sm:hidden">
-          <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-        </button>
+        <div class="flex items-center gap-2">
+          <button id="theme-toggle" aria-label="다크모드 전환" class="btn-outline rounded-lg p-2">
+            <svg class="hidden h-4 w-4 dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+            <svg class="h-4 w-4 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+          <button id="menu-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mobile-menu" class="btn-outline rounded-lg p-2 md:hidden">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+        </div>
+      </nav>
+
+      <!-- 모바일 메뉴 -->
+      <div id="mobile-menu" class="hidden border-t border-slate-200 dark:border-white/10 md:hidden">
+        <ul class="mx-auto flex max-w-5xl flex-col px-4 py-2 text-sm font-medium">
+          <li><a href="#home" class="block rounded-md px-3 py-2.5 text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/5">홈</a></li>
+          <li><a href="#about" class="block rounded-md px-3 py-2.5 text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/5">소개</a></li>
+          <li><a href="#highlights" class="block rounded-md px-3 py-2.5 text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/5">성과</a></li>
+          <li><a href="#skills" class="block rounded-md px-3 py-2.5 text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/5">역량</a></li>
+          <li><a href="#projects" class="block rounded-md px-3 py-2.5 text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/5">프로젝트</a></li>
+          <li><a href="#publications" class="block rounded-md px-3 py-2.5 text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/5">논문</a></li>
+          <li><a href="#contact" class="block rounded-md px-3 py-2.5 text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/5">연락처</a></li>
+        </ul>
       </div>
-    </nav>
-
-    <!-- 모바일 메뉴 -->
-    <div id="mobile-menu" class="glass-nav mx-auto mt-2 hidden max-w-5xl rounded-2xl sm:hidden">
-      <ul class="flex flex-col p-2 text-sm font-medium">
-        <li><a href="#home" class="block rounded-xl px-4 py-3 hover:bg-white/40 dark:hover:bg-white/10">홈</a></li>
-        <li><a href="#about" class="block rounded-xl px-4 py-3 hover:bg-white/40 dark:hover:bg-white/10">소개</a></li>
-        <li><a href="#highlights" class="block rounded-xl px-4 py-3 hover:bg-white/40 dark:hover:bg-white/10">성과</a></li>
-        <li><a href="#skills" class="block rounded-xl px-4 py-3 hover:bg-white/40 dark:hover:bg-white/10">기술</a></li>
-        <li><a href="#projects" class="block rounded-xl px-4 py-3 hover:bg-white/40 dark:hover:bg-white/10">프로젝트</a></li>
-        <li><a href="#contact" class="block rounded-xl px-4 py-3 hover:bg-white/40 dark:hover:bg-white/10">연락처</a></li>
-      </ul>
     </div>
   </header>
 
   <main>
     <!-- ===== Hero ===== -->
-    <section id="home" class="flex min-h-screen items-center px-4 pt-24 sm:px-6">
-      <div class="mx-auto grid w-full max-w-5xl items-center gap-12 md:grid-cols-[1.25fr,1fr]">
-        <div>
-          <p class="reveal mb-4 inline-flex items-center gap-2 rounded-full border border-white/60 bg-white/40 px-3 py-1 text-xs font-semibold text-navy-600 backdrop-blur dark:border-white/15 dark:bg-white/5 dark:text-navy-200">
-            <span class="h-2 w-2 rounded-full bg-emerald-400"></span> 새로운 프로젝트 제안 환영
-          </p>
-          <h1 class="reveal text-6xl font-extrabold tracking-tight sm:text-7xl">
-            안녕하세요,<br />
-            <span class="bg-gradient-to-r from-navy-500 to-sky-400 bg-clip-text text-transparent dark:from-navy-300 dark:to-sky-300">민두성</span>입니다
-          </h1>
-          <p class="reveal mt-5 text-xl font-semibold text-navy-700 dark:text-navy-200 sm:text-2xl">
-            <span id="typing"></span><span class="caret">|</span>
-          </p>
-          <p class="reveal mt-5 max-w-xl text-lg leading-relaxed text-navy-700/80 dark:text-navy-200/80">
-            금융·유통 IT 사업을 15년 이상 이끌어 온 프로젝트 매니저입니다.
-          </p>
-          <div class="reveal mt-10 flex flex-wrap gap-3">
-            <a href="#projects" class="btn-primary rounded-full px-6 py-3 text-sm font-semibold">프로젝트 보기</a>
-            <a href="#contact" class="btn-glass rounded-full px-6 py-3 text-sm font-semibold">연락하기</a>
+    <section id="home" class="px-4 pb-16 pt-28 sm:px-6 sm:pt-36">
+      <div class="mx-auto max-w-5xl">
+        <div class="grid items-center gap-12 md:grid-cols-[1.4fr,1fr]">
+          <div>
+            <p class="eyebrow reveal">Project Manager · 금융·유통 IT</p>
+            <h1 class="reveal mt-4 text-5xl font-extrabold tracking-tight text-navy-950 dark:text-white sm:text-6xl">민두성</h1>
+            <!-- script.js 의 ROLES 로 채워집니다 -->
+            <p id="hero-roles" class="reveal mt-4 text-lg font-semibold text-navy-700 dark:text-navy-200"></p>
+            <p class="reveal mt-6 max-w-xl text-lg leading-relaxed text-slate-600 dark:text-slate-400">
+              금융·유통 IT 사업을 <span id="hero-years"></span>년 넘게 이끌어 온 프로젝트 매니저입니다.
+              구축(SI)부터 운영(SM), TF까지 사업의 전 과정을 책임져 왔습니다.
+            </p>
+            <div class="reveal mt-10 flex flex-wrap gap-3">
+              <a href="#highlights" class="btn-primary rounded-lg px-5 py-3 text-sm font-semibold">핵심 성과 보기</a>
+              <a href="#contact" class="btn-outline rounded-lg px-5 py-3 text-sm font-semibold">연락하기</a>
+            </div>
+          </div>
+
+          <!-- 프로필 카드 -->
+          <div class="card reveal mx-auto w-full max-w-sm rounded-xl p-6">
+            <div class="flex items-center gap-5">
+              <img src="profile.jpg" alt="민두성 프로필 사진" width="112" height="112" class="h-24 w-24 shrink-0 rounded-lg object-cover sm:h-28 sm:w-28" />
+              <div>
+                <p class="text-xl font-bold text-navy-950 dark:text-white">민두성</p>
+                <p class="mt-0.5 text-sm text-slate-500 dark:text-slate-400">Project Manager</p>
+              </div>
+            </div>
+            <dl class="mt-6 divide-y divide-slate-200 border-t border-slate-200 text-sm dark:divide-white/10 dark:border-white/10">
+              <div class="flex items-center justify-between py-2.5">
+                <dt class="text-slate-500 dark:text-slate-400">소속</dt><dd id="profile-company" class="font-semibold">농협정보시스템</dd>
+              </div>
+              <div class="flex items-center justify-between py-2.5">
+                <dt class="text-slate-500 dark:text-slate-400">분야</dt><dd id="profile-field" class="font-semibold">금융·유통 IT</dd>
+              </div>
+              <div class="flex items-center justify-between py-2.5">
+                <dt class="text-slate-500 dark:text-slate-400">배경</dt><dd class="font-semibold">SI·SM 구축·운영</dd>
+              </div>
+              <div class="flex items-center justify-between py-2.5">
+                <dt class="text-slate-500 dark:text-slate-400">이메일</dt><dd class="font-semibold">ablefor@gmail.com</dd>
+              </div>
+            </dl>
           </div>
         </div>
 
-        <!-- 프로필 카드 -->
-        <div class="reveal">
-          <div class="glass float mx-auto max-w-sm rounded-3xl p-8">
-            <div class="flex items-center gap-5">
-              <img src="profile.jpg" alt="민두성 프로필 사진" width="128" height="128" class="h-28 w-28 shrink-0 rounded-3xl object-cover shadow-lg shadow-navy-500/30 ring-2 ring-white/60 sm:h-32 sm:w-32 dark:ring-white/10" />
-              <div>
-                <p class="text-xl font-bold">민두성</p>
-                <p class="text-sm text-navy-600 dark:text-navy-300">Project Manager</p>
-              </div>
-            </div>
-            <ul class="mt-5 space-y-2 text-xs">
-              <li class="flex items-center justify-between rounded-lg bg-white/40 px-3.5 py-2 dark:bg-white/5">
-                <span class="text-navy-600 dark:text-navy-300">소속</span><span id="profile-company" class="font-semibold">농협정보시스템</span>
-              </li>
-              <li class="flex items-center justify-between rounded-lg bg-white/40 px-3.5 py-2 dark:bg-white/5">
-                <span class="text-navy-600 dark:text-navy-300">분야</span><span id="profile-field" class="font-semibold">금융·유통 IT</span>
-              </li>
-              <li class="flex items-center justify-between rounded-lg bg-white/40 px-3.5 py-2 dark:bg-white/5">
-                <span class="text-navy-600 dark:text-navy-300">배경</span><span class="font-semibold">SI·SM 구축·운영</span>
-              </li>
-              <li class="flex items-center justify-between rounded-lg bg-white/40 px-3.5 py-2 dark:bg-white/5">
-                <span class="text-navy-600 dark:text-navy-300">이메일</span><span class="font-semibold">ablefor@gmail.com</span>
-              </li>
-            </ul>
-          </div>
-        </div>
+        <!-- 핵심 수치: script.js 가 CAREER·PROJECTS 에서 계산해 채웁니다 -->
+        <dl id="hero-metrics" class="reveal mt-16 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-slate-200 bg-slate-200 dark:border-white/10 dark:bg-white/10 lg:grid-cols-4"></dl>
       </div>
     </section>
 
-    <!-- ===== About ===== -->
-    <section id="about" class="px-4 py-24 sm:px-6">
-      <div class="glass reveal mx-auto max-w-5xl rounded-3xl p-8 sm:p-12">
-        <h2 class="section-title">소개</h2>
-        <p class="mt-6 text-lg leading-relaxed text-navy-800 dark:text-navy-100">
-          2011년 시스템 운영으로 시작해 유통·물류, 농협 경제유통 차세대 구축과 금융 채널 사업까지 쉼없이 이끌어 왔습니다.<br />
-          현장 업무를 이해하는 PM으로서 사업이 실제 성과로 이어지도록 만드는 일을 합니다.
-        </p>
-        <!-- script.js 의 CAREER 상수로 채워집니다 -->
-        <dl id="career-summary" class="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
-        </dl>
+    <!-- ===== 소개 ===== -->
+    <section id="about" class="px-4 py-20 sm:px-6">
+      <div class="mx-auto max-w-5xl">
+        <p class="eyebrow reveal">01 · About</p>
+        <h2 class="section-title reveal">소개</h2>
+        <div class="mt-10 grid gap-6 lg:grid-cols-[1.15fr,1fr]">
+          <div class="card reveal rounded-xl p-6 sm:p-8">
+            <p class="text-lg leading-relaxed text-slate-700 dark:text-slate-300">
+              2011년 시스템 운영으로 시작해 유통·물류, 농협 경제유통 차세대 구축과 금융 채널 사업까지 쉼없이 이끌어 왔습니다.
+              현장 업무를 이해하는 PM으로서 사업이 실제 성과로 이어지도록 만드는 일을 합니다.
+            </p>
+            <!-- script.js 의 CAREER 상수로 채워집니다 -->
+            <dl id="career-summary" class="mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-slate-200 bg-slate-200 dark:border-white/10 dark:bg-white/10"></dl>
+          </div>
+          <div class="card reveal rounded-xl p-6 sm:p-8">
+            <h3 class="text-sm font-bold text-slate-500 dark:text-slate-400">경력 흐름</h3>
+            <!-- script.js 의 CAREER_PHASES 로 채워집니다 -->
+            <ol id="career-timeline" class="mt-6 border-l border-slate-200 dark:border-white/10"></ol>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- ===== 핵심 성과 ===== -->
-    <section id="highlights" class="px-4 py-24 sm:px-6">
+    <section id="highlights" class="px-4 py-20 sm:px-6">
       <div class="mx-auto max-w-5xl">
+        <p class="eyebrow reveal">02 · Key Results</p>
         <h2 class="section-title reveal">핵심 성과</h2>
-        <p class="reveal mt-4 text-navy-700/80 dark:text-navy-200/80">어떤 문제를 어떻게 풀었고, 무엇이 달라졌는지 정리했습니다.</p>
+        <p class="reveal mt-3 text-slate-600 dark:text-slate-400">어떤 문제를 어떻게 풀었고, 무엇이 달라졌는지 정리했습니다.</p>
         <!-- script.js 의 HIGHLIGHTS 배열로 채워집니다 -->
-        <div id="highlights-grid" class="mt-12 grid gap-6 lg:grid-cols-3"></div>
+        <div id="highlights-grid" class="mt-10 grid gap-6 lg:grid-cols-3"></div>
       </div>
     </section>
 
-    <!-- ===== 기술 스택 ===== -->
-    <section id="skills" class="px-4 py-24 sm:px-6">
+    <!-- ===== 역량 (기술 스택) ===== -->
+    <section id="skills" class="px-4 py-20 sm:px-6">
       <div class="mx-auto max-w-5xl">
-        <h2 class="section-title reveal">기술 스택</h2>
-        <p class="reveal mt-4 text-navy-700/80 dark:text-navy-200/80">구축과 운영을 모두 경험한 시선으로 기술과 일정을 함께 봅니다.</p>
+        <p class="eyebrow reveal">03 · Expertise</p>
+        <h2 class="section-title reveal">역량</h2>
+        <p class="reveal mt-3 text-slate-600 dark:text-slate-400">구축과 운영을 모두 경험한 시선으로 기술과 일정을 함께 봅니다.</p>
         <!-- script.js 의 SKILLS 배열로 채워집니다 -->
-        <div id="skills-grid" class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+        <div id="skills-grid" class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
       </div>
     </section>
 
     <!-- ===== 프로젝트 ===== -->
-    <section id="projects" class="px-4 py-24 sm:px-6">
+    <section id="projects" class="px-4 py-20 sm:px-6">
       <div class="mx-auto max-w-5xl">
+        <p class="eyebrow reveal">04 · Projects</p>
         <h2 class="section-title reveal">프로젝트</h2>
         <div class="reveal mt-8 flex flex-wrap items-center justify-between gap-4">
           <div id="project-filters" class="flex flex-wrap gap-2"></div>
-          <p id="project-count" class="text-sm text-navy-500 dark:text-navy-300"></p>
+          <p id="project-count" class="text-sm text-slate-500 dark:text-slate-400"></p>
         </div>
         <!-- script.js 의 PROJECTS 배열로 채워집니다 -->
-        <div id="projects-grid" class="mt-8 flex flex-col gap-4"></div>
+        <div id="projects-grid" class="mt-6 flex flex-col gap-3"></div>
+      </div>
+    </section>
+
+    <!-- ===== 논문 ===== -->
+    <section id="publications" class="px-4 py-20 sm:px-6">
+      <div class="mx-auto max-w-5xl">
+        <p class="eyebrow reveal">05 · Publications</p>
+        <h2 class="section-title reveal">논문</h2>
+        <p class="reveal mt-3 text-slate-600 dark:text-slate-400">학술대회 등재 논문입니다.</p>
+        <!-- script.js 의 PUBLICATIONS 배열로 채워집니다 -->
+        <div id="publications-list" class="mt-10 flex flex-col gap-4"></div>
       </div>
     </section>
 
     <!-- ===== 연락처 ===== -->
-    <section id="contact" class="px-4 py-24 sm:px-6">
-      <div class="glass reveal relative mx-auto max-w-3xl overflow-hidden rounded-3xl px-6 py-16 text-center sm:px-12">
-        <div aria-hidden="true" class="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-navy-300/50 blur-3xl dark:bg-navy-400/30"></div>
-        <div aria-hidden="true" class="pointer-events-none absolute -bottom-20 -left-10 h-56 w-56 rounded-full bg-sky-200/60 blur-3xl dark:bg-sky-400/20"></div>
-        <div class="relative">
-          <h2 class="text-3xl font-extrabold sm:text-4xl">함께 일해요</h2>
-          <p class="mx-auto mt-4 max-w-md text-navy-700/80 dark:text-navy-200/80">새로운 프로젝트나 협업 제안은 언제든 환영합니다.</p>
-          <div class="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <a href="mailto:ablefor@gmail.com" class="btn-primary inline-flex items-center gap-2 rounded-full px-6 py-3 font-semibold">
-              <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
-              ablefor@gmail.com
-            </a>
-            <button id="copy-email" data-email="ablefor@gmail.com" class="btn-glass rounded-full px-6 py-3 font-semibold">주소 복사</button>
-          </div>
+    <section id="contact" class="px-4 py-20 sm:px-6">
+      <div class="reveal mx-auto flex max-w-5xl flex-col gap-8 rounded-xl bg-navy-900 px-6 py-12 text-white dark:border dark:border-white/10 dark:bg-[#111a2e] sm:px-12 md:flex-row md:items-center md:justify-between">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-[0.14em] text-navy-300">Contact</p>
+          <h2 class="mt-2 text-2xl font-extrabold tracking-tight sm:text-3xl">프로젝트 관리 · 컨설팅 문의</h2>
+          <p class="mt-3 text-navy-200 dark:text-slate-400">사업 수행이나 협업 관련 문의는 이메일로 연락 주세요.</p>
+        </div>
+        <div class="flex shrink-0 flex-col gap-3 sm:flex-row">
+          <a href="mailto:ablefor@gmail.com" class="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-semibold text-navy-900 transition hover:bg-navy-50">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+            ablefor@gmail.com
+          </a>
+          <button id="copy-email" data-email="ablefor@gmail.com" class="rounded-lg border border-white/30 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10">주소 복사</button>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="px-4 py-8 text-center text-sm text-navy-500 dark:text-navy-300">
-    © <span id="year"></span> 민두성. All rights reserved.
+  <footer class="border-t border-slate-200 px-4 py-8 text-sm text-slate-500 dark:border-white/10 dark:text-slate-400 sm:px-6">
+    <div class="mx-auto flex max-w-5xl flex-col items-center justify-between gap-3 sm:flex-row">
+      <p>© <span id="year"></span> 민두성. All rights reserved.</p>
+      <!-- 방문자 카운터: 배포 주소에서만 script.js 가 채웁니다 (로컬 확인 시 집계 안 함) -->
+      <p id="visitor-counter" class="hidden"></p>
+    </div>
   </footer>
 
   <!-- 프로젝트 상세 모달: script.js 의 PROJECTS[].detail 로 채워집니다 -->
   <dialog id="project-modal" aria-labelledby="project-modal-title"
-    class="w-[calc(100%-2rem)] max-w-2xl rounded-3xl bg-transparent p-0 text-navy-900 dark:text-white">
-    <div class="glass-modal relative max-h-[85vh] overflow-y-auto rounded-3xl p-6 sm:p-10">
-      <button id="project-modal-close" type="button" aria-label="닫기" class="btn-glass absolute right-4 top-4 rounded-full p-2">
-        <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    class="w-[calc(100%-2rem)] max-w-2xl rounded-xl bg-transparent p-0 text-slate-800 dark:text-slate-200">
+    <div class="modal-surface relative max-h-[85vh] overflow-y-auto rounded-xl p-6 sm:p-10">
+      <button id="project-modal-close" type="button" aria-label="닫기" class="btn-outline absolute right-4 top-4 rounded-lg p-2">
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
       <div id="project-modal-body"></div>
     </div>
@@ -225,13 +247,13 @@
 
   <!-- 맨 위로 -->
   <button id="to-top" aria-label="맨 위로"
-    class="btn-glass fixed bottom-6 right-6 z-40 translate-y-4 rounded-full p-3 opacity-0 pointer-events-none">
-    <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m18 15-6-6-6 6"/></svg>
+    class="btn-outline fixed bottom-6 right-6 z-40 translate-y-4 rounded-lg p-3 opacity-0 shadow-sm pointer-events-none">
+    <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m18 15-6-6-6 6"/></svg>
   </button>
 
   <!-- 토스트 -->
   <div id="toast"
-    class="glass-nav fixed bottom-6 left-1/2 z-50 -translate-x-1/2 translate-y-4 rounded-full px-5 py-3 text-sm font-medium opacity-0 transition pointer-events-none">
+    class="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 translate-y-4 rounded-lg bg-navy-950 px-5 py-3 text-sm font-medium text-white opacity-0 shadow-lg transition pointer-events-none dark:bg-white dark:text-navy-950">
   </div>
 
   <script src="script.js"></script>
