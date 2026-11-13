@@ -41,4 +41,5 @@
 - `#to-top`, `#toast`는 공용 `.show` 클래스(`!important`)로 표시/숨김을 전환한다.
 - 이메일 주소는 `index.html`의 프로필 카드, `mailto:` 링크, `#copy-email`의 `data-email` 세 곳에 중복되어 있다.
 - `prefers-reduced-motion`을 존중한다(`.reveal`·모달 애니메이션 비활성화).
+- 줄바꿈(단처리): `<body>`에 `break-keep`을 걸어 모바일에서는 띄어쓰기 단위로 줄바꿈된다. PC에서만 의미 단위로 줄을 바꿀 곳에는 `<br class="hidden lg:inline" />`을 넣고, `CAREER_PHASES[].summary`에서는 `\n`이 같은 역할을 한다. 문장을 고치면 PC(1024px 이상)에서 각 줄이 한 줄에 들어가는지 확인한다.
 - 코드 주석과 UI 텍스트는 한국어로 작성한다.

@@ -16,6 +16,7 @@ const CAREER = {
 
 // 경력 흐름: 소개 섹션 타임라인 (최신순)
 // projects = 이 시기에 속한 PROJECTS 의 title. 기간과 건수는 해당 프로젝트들의 period 로 자동 계산됩니다
+// summary 안의 \n 은 PC에서만 줄바꿈됩니다 (모바일은 띄어쓰기 단위로 자동 줄바꿈)
 const CAREER_PHASES = [
   {
     title: '금융 채널 사업 PM',
@@ -37,7 +38,7 @@ const CAREER_PHASES = [
   },
   {
     title: '유통·물류 IT PM',
-    summary: '하나로유통·농협물류 시스템 구축·운영 총괄 (진열·수발주·물류센터 자동화, 전자세금계산서)',
+    summary: '하나로유통·농협물류 시스템 구축·운영 총괄\n(진열·수발주·물류센터 자동화, 전자세금계산서)',
     projects: [
       '하나로유통 지능형 물류센터 추진 전산개발',
       '유통일부 위탁업무 (생활물자/농산물물류)',
@@ -327,7 +328,7 @@ $('#career-timeline').innerHTML = CAREER_PHASES.map((phase, i) => {
     <span class="absolute -left-[5px] top-1.5 h-2.5 w-2.5 rounded-full ${i === 0 ? 'bg-navy-700 ring-4 ring-navy-100 dark:bg-sky-300 dark:ring-sky-300/20' : 'bg-slate-300 dark:bg-slate-600'}"></span>
     <p class="text-xs font-semibold tracking-wide text-navy-700 dark:text-sky-300">${range}</p>
     <h4 class="mt-1 font-bold text-navy-950 dark:text-white">${phase.title}</h4>
-    <p class="mt-1 text-sm leading-relaxed text-slate-600 dark:text-slate-400">${phase.summary}</p>
+    <p class="mt-1 text-balance text-sm leading-relaxed text-slate-600 dark:text-slate-400">${phase.summary.replace(/\n/g, '<br class="hidden lg:inline" /> ')}</p>
     <p class="mt-1.5 text-xs text-slate-400 dark:text-slate-500">프로젝트 ${count}건</p>
   </li>`;
 }).join('');
